@@ -5,8 +5,7 @@ const {deletePetById, createPet, getAllPets}=require('../controllers/petsControl
 const router=express.Router();
 
 
-
-router.post('/', isPetExist, createPet);
+router.post('/', createPet);
 router.get('/', getAllPets)
 router.delete('/:PetId',deletePetById);
 
