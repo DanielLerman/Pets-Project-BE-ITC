@@ -4,6 +4,8 @@ require("dotenv").config();
 const myPetRoute = require("./routes/myPetRoute");
 const signUpRoute = require("./routes/signUpRoute");
 const authRoute=require('./routes/authRoute')
+const refreshRoute=require('./routes/refreshRoute')
+const logoutRoute=require('./routes/logOutRoute')
 const app = express();
 const verifyJWT=require('./middlewares/verifyJwt')
 const cookieParser=require('cookie-parser')
@@ -14,10 +16,12 @@ const PORT = process.env.PORT || 8080;
 connectDB();
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({credentials:"http://localhost:3000"}));
 app.use(cookieParser())
 app.use("/SignUp", signUpRoute);
 app.use("/LogIn", authRoute);
+app.use("/refresh", refreshRoute);
+app.use("/LogOut",logoutRoute)
 
 // app.use(verifyJWT);
 app.use("/pets", myPetRoute);
