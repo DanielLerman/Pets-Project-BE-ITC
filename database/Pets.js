@@ -24,7 +24,7 @@ const petsSchema=new Schema({
     },  
     adoptionStatus:{
         type:String,
-        required:false
+        required:true
     }, 
     image:{
         type:String,
@@ -38,6 +38,11 @@ const petsSchema=new Schema({
         type:String,
         required:false
     }, 
+    breed:{
+        type:String,
+        default:"unKnown",
+        required:false   
+    }
 })
 
 const Pet=mongoose.model('Pets', petsSchema);

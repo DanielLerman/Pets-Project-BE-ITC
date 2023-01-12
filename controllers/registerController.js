@@ -35,6 +35,14 @@ const createUser = async (req, res, next) => {
     }catch(err){
         console.log(err)
         res.status(500).json({ message: err.message });
-    }
+    }   
 };
-module.exports = {createUser ,checkFields, checkPassword, isExist};
+
+const getUsers=async(req,res)=>{
+    const allUsers=await User.find();
+    if(!allUsers) return res.status(204).json({ message: "no users found" })
+    res.json(allUsers)
+
+      
+  }
+module.exports = {createUser ,checkFields, checkPassword, isExist,getUsers };
