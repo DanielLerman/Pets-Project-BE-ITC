@@ -6,13 +6,16 @@ const checkFields=async(req, res, next)=>{
     if (!req.body.email || !req.body.password || !req.body.rePassword) {
        res.status(400).json({ message: "username amd password are required." });
        return
-    }next()
+    }
+    next()
 }
+
 const checkPassword=async(req,res, next)=>{
     if (req.body.password != req.body.rePassword){
      res.status(400).json({ message: "passwords dont match." });  
      return 
-}next()
+    }
+next()
 }
  
 const isExist=async(req, res, next)=>{

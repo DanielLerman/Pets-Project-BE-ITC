@@ -47,18 +47,7 @@ const deletePetById = async (req, res) => {
   }
 };
 
-// const getPetBySearch = async (req, res) => {
-//   console.log(req.query);
-//   const pet = await Pets.find({ name: req.query.name });
-//   if (!pet) {
-//     return res
-//       .status(204)
-//       .json({ message: `No pet matches ID ${req.query.name}` });
-//   } else {
-//     res.send(pet);
-//     console.log("Res ", pet);
-//   }
-// };
+
 
 module.exports = {
   deletePetById,

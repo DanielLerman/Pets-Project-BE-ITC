@@ -1,8 +1,8 @@
 const express=require('express')
 const router=express.Router();
-const {handleLogin,isUserSigned,matchPasswords}=require("../controllers/authController")
+const {handleLogin,isUserSigned,matchPasswords,isUserAdmin}=require("../controllers/authController")
 
-router.post('/',handleLogin,isUserSigned,matchPasswords);
+router.post('/',isUserAdmin, handleLogin,isUserSigned,matchPasswords);
 
 
 module.exports=router 

@@ -3,6 +3,16 @@ const User = require("../database/Users");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
+// process.env.REFRESH_TOKEN_SECRET,
+const isUserAdmin=async(req,res,next)=>{
+  const {admin}=req.body;
+  if(admin!=process.env.ADMIN) {
+    res.json({ message: "key not valid " })
+    return
+  } 
+  if(admin==process.env.ADMIN || admin) return next()
+}
+
 const handleLogin = async (req, res, next) => {
   const { email, password } = req.body;
   if (!email || !password) {
@@ -23,25 +33,27 @@ const isUserSigned = async (req, res, next) => {
 
 const matchPasswords = async (req, res, next) => {
   const foundUser = await User.findOne({ email: req.body.email }).exec();
+  console.log(foundUser.password)
   const match = await bcrypt.compare(req.body.password, foundUser.password);
   if (match) {
-    const roles = Object.values(foundUser.role);
-    console.log(roles);
-    const accessToken = jwt.sign(
-      { userId: foundUser._id },
-      process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: "30s" }
-    );
+    // const roles = Object.values(foundUser.role);
+    // console.log()
+    // const accessToken = jwt.sign(
+    //   { userId: foundUser._id },
+    //   process.env.ACCESS_TOKEN_SECRET,
+    //   { expiresIn: "30s" }
+    // );
     const refreshToken = jwt.sign(
-      { userId: foundUser._id },
+      { userId: foundUser._id ,},
+      
       process.env.REFRESH_TOKEN_SECRET,
       { expiresIn: "1d" }
     );
 
     ///saving refresh toke with current user
     foundUser.refreshToken = refreshToken;
+    foundUser.role.admin=req.body.admin;
     const result = await foundUser.save();
-    console.log(result);
     res.cookie("jwt", refreshToken, {
       httpOnly: true,
       maxAge: 24 * 60 * 60 * 1000,
@@ -54,4 +66,4 @@ const matchPasswords = async (req, res, next) => {
   }
 };
 
-module.exports = { handleLogin, isUserSigned, matchPasswords };
+module.exports = { handleLogin, isUserSigned, matchPasswords,isUserAdmin};
