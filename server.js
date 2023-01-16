@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
-const myPetRoute = require("./routes/myPetRoute");
+const myPetRoute = require("./routes/petRoute");
 const signUpRoute = require("./routes/signUpRoute");
 const authRoute = require("./routes/authRoute");
 const refreshRoute = require("./routes/refreshRoute");
@@ -19,6 +19,7 @@ connectDB();
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(express.static('images'))
 app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 app.use("/SignUp", signUpRoute);
 app.use("/LogIn", authRoute);

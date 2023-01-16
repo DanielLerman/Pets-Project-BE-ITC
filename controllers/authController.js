@@ -5,12 +5,12 @@ const jwt = require("jsonwebtoken");
 
 // process.env.REFRESH_TOKEN_SECRET,
 const isUserAdmin=async(req,res,next)=>{
-  const {admin}=req.body;
-  if(admin!=process.env.ADMIN) {
+  const {admin, email, password}=req.body;
+  if(admin!=""&&admin!=process.env.ADMIN) {
     res.json({ message: "key not valid " })
     return
   } 
-  if(admin==process.env.ADMIN || admin) return next()
+  if(admin==process.env.ADMIN || admin=="") return next()
 }
 
 const handleLogin = async (req, res, next) => {
@@ -52,7 +52,10 @@ const matchPasswords = async (req, res, next) => {
 
     ///saving refresh toke with current user
     foundUser.refreshToken = refreshToken;
-    foundUser.role.admin=req.body.admin;
+     foundUser.role.admin=req.body.admin;
+
+    
+ 
     const result = await foundUser.save();
     res.cookie("jwt", refreshToken, {
       httpOnly: true,
