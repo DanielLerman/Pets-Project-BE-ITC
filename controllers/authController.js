@@ -57,10 +57,7 @@ const matchPasswords = async (req, res, next) => {
     
  
     const result = await foundUser.save();
-    res.cookie("jwt", refreshToken, {
-      httpOnly: true,
-      maxAge: 24 * 60 * 60 * 1000,
-    });
+res.cookie("jwt", refreshToken, {httpOnly: true,maxAge: 24 * 60 * 60 * 1000 });
     // res.json({accessToken, result})
     res.send(result);
     //    res.send("this is the result", result)

@@ -37,9 +37,7 @@ const deletePetById = async (req, res) => {
   // if(!req?.body?.id) returnres.status(400).json({'message':'Pets Id required'});
   const pet = await Pets.findOne({ _id: req.params.PetId }).exec();
   if (!pet) {
-    return res
-      .status(204)
-      .json({ message: `No pet matches ID ${req.params.PetId}` });
+    return res.status(204).json({ message: `No pet matches ID ${req.params.PetId}` });
   }
   const deleted = await Pets.deleteOne({ _id: req.params.PetId });
   if (deleted) {

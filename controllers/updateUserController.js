@@ -34,37 +34,41 @@ const findUser = async (req, res, next) => {
     }
     return acc;
   }, {});
-  const updatedUser = await User.findOneAndUpdate(
-    { refreshToken: refreshToken },
-    update,
-    { returnDocument: "after" }
-  );
+  const updatedUser = await User.findOneAndUpdate({ refreshToken: refreshToken },update,{ returnDocument: "after" });
   res.json(updatedUser);
 };
 
 const isLikedPetExist = async (req, res, next) => {
-  const duplicate = await User.findOne({ likedPets: req.query.id }).exec();
+  const duplicate = await User.findOne({ likedPets: req.params.petId }).exec();
   if (duplicate) {
-    res.sendStatus(409);
+    res.status(409).json({ message: "alredy saved" });
     return;
   }
   next();
 };
 
 const addLikedPet = async (req, res) => {
-  // const cookies = req.cookies;
-  console.log(req.body.userId);
-  // if (!cookies?.jwt) return res.sendStatus(401);
-  // const refreshToken = cookies.jwt;
-  // const foundUser = await User.findOne({userId}).exec();
-  // if (!foundUser) return res.sendStatus(403);
-  const updatedUser = await User.findOneAndUpdate(
-    { _id: userId },
-    { $push: { likedPets: req.query.id } },
-    { returnDocument: "after" }
-  );
-  console.log(updatedUser);
-  // console.log(foundUser)
-};
+  const cookies = req.cookies;
+  const refreshToken = cookies.jwt;
+  const foundUser = await User.findOne({refreshToken}).exec();
+  if (!foundUser) return res.sendStatus(403);
+  const updatedUser = await User.findOneAndUpdate( { refreshToken:refreshToken}, { $push: { likedPets: req.params.petId } },{ returnDocument: "after" });
+  res.send( updatedUser)
+}; 
 
-module.exports = { checkPassword, findUser, addLikedPet, isLikedPetExist };
+// await Pets.find({_id:{$in:{ req.body}}})
+
+
+const deleteLikedPet=async(req,res)=>{
+  const cookies = req.cookies;
+  const refreshToken = cookies.jwt;
+  const foundUser = await User.findOne({refreshToken}).exec();
+  if (!foundUser) return res.sendStatus(403);
+  const updatedUser = await User.findOneAndUpdate( { refreshToken:refreshToken}, {$pull: { likedPets: req.params.petId }});
+   res.send(updatedUser)
+
+}
+
+
+
+module.exports = { checkPassword, findUser, addLikedPet, isLikedPetExist,deleteLikedPet };
