@@ -39,8 +39,6 @@ const User = require("../database/Users");
 const jwt = require("jsonwebtoken");
 
 const verifyJwt = async (req, res,next) => {
-  console.log("this is th cookiesss", req.cookies)
-
   const cookies = req.cookies;
   if (!cookies?.jwt) return res.sendStatus(401);
   const refreshToken = cookies.jwt;

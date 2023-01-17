@@ -45,11 +45,16 @@ const deletePetById = async (req, res) => {
   }
 };
 
+const getSavedPets =async(req,res)=>{
+  const foundedPets=await Pets.find({_id:{$in: req.body}})
+  res.send(foundedPets)
+}
 
 
 module.exports = {
   deletePetById,
   createPet,
   getAllPets,
-  getPetById
+  getPetById,
+  getSavedPets
 };
