@@ -4,7 +4,6 @@ const Pets = require("../database/Pets");
 
 
 const createPet = async (req, res) => {
-  // if(!req?.body?.name)
   try {
     const newPet = await Pets.create({
       ...req.body,
@@ -50,11 +49,17 @@ const getSavedPets =async(req,res)=>{
   res.send(foundedPets)
 }
 
+const addUserToPet =async(req,res,next)=>{
+
+
+}
+
 
 module.exports = {
   deletePetById,
   createPet,
   getAllPets,
   getPetById,
-  getSavedPets
+  getSavedPets,
+  addUserToPet
 };
